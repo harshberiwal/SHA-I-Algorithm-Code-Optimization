@@ -22,7 +22,7 @@
 #include "pbkdf2_test.h"
 #include "ticktime.h"
 
-extern uint32_t count_F;
+/*extern uint32_t count_F;
 extern uint32_t total_F;
 
 
@@ -42,7 +42,7 @@ extern uint32_t count_IPM;
 extern uint32_t total_IPM;
 
 extern uint32_t count_IPMB;
-extern uint32_t total_IPMB;
+extern uint32_t total_IPMB;*/
 
 /*
  * Times a single call to the pbkdf2_hmac_isha function, and prints
@@ -66,7 +66,7 @@ static void time_pbkdf2_hmac_isha()
 
   hexstr_to_bytes(exp_result, exp_result_hex, dk_len);passlen = strlen(pass);
   saltlen = strlen(salt);
-  total_F = 0;
+/*  total_F = 0;
   count_F = 0;
   total_Pb = 0;
   count_Pb = 0;
@@ -79,7 +79,7 @@ static void time_pbkdf2_hmac_isha()
   count_IPM =0;
   total_IPM =0;
   count_IPMB =0;
-  total_IPMB =0;
+  total_IPMB =0;*/
   reset_timer();
   pbkdf2_hmac_isha((const uint8_t *)pass, passlen, (const uint8_t *)salt, saltlen,
       iterations, dk_len, act_result);
@@ -91,7 +91,7 @@ static void time_pbkdf2_hmac_isha()
   } else {
     printf("FAILURE on timed test\r\n");
   }
-  printf("Number of Times Function F is called is %d\n\r", count_F);
+/*  printf("Number of Times Function F is called is %d\n\r", count_F);
   printf("Total time taken by Function F is %d msec\n\r", total_F/10);
   printf("Number of Times Function pbkdf2_hmac_isha is called is %d\n\r", count_Pb);
   printf("Total time taken by Function pbkdf2_hmac_isha is %d msec\n\r", total_Pb/10);
@@ -104,7 +104,7 @@ static void time_pbkdf2_hmac_isha()
       printf("Number of Times Function ishaPadmessage is called is %d\n\r", count_IPM);
       printf("Total time taken by Function ishaPadmessage is %d msec\n\r", total_IPM/10);
       printf("Number of Times Function ishaProcessMessageBlock is called is %d\n\r", count_IPMB);
-  printf("Total time taken by Function ishaProcessMessageBlock is %d msec\n\r", total_IPMB/10);
+  printf("Total time taken by Function ishaProcessMessageBlock is %d msec\n\r", total_IPMB/10);*/
 /*  printf("Number of Times Function isha_reset is called is %d\n\r", count_R);
   printf("Number of Times Function isha_input is called is %d\n\r", count_I);
   printf("Number of Times Function isha_result is called is %d\n\r", count_IR);
@@ -138,7 +138,8 @@ static void run_tests()
  */
 int main(void) {
 
-  /* Init board hardware. */  BOARD_InitBootPins();
+  /* Init board hardware. */
+	BOARD_InitBootPins();
   BOARD_InitBootClocks();
   BOARD_InitBootPeripherals();
 #ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL

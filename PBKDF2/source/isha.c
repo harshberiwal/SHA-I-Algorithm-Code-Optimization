@@ -11,8 +11,9 @@
 
 #include "isha.h"
 #include "ticktime.h"
+#include "string.h"
 
-uint32_t count_IR =0;
+/*uint32_t count_IR =0;
 uint32_t total_IR =0;
 
 
@@ -23,7 +24,7 @@ uint32_t count_IPM =0;
 uint32_t total_IPM =0;
 
 uint32_t count_IPMB =0;
-uint32_t total_IPMB =0;
+uint32_t total_IPMB =0;*/
 
 /*
  * circular shift macro
@@ -40,45 +41,22 @@ uint32_t total_IPMB =0;
  *   ctx         The ISHAContext (in/out)
  */
 static void ISHAProcessMessageBlock(ISHAContext *ctx)
-{
+{/*
 	uint32_t duration_IPMB_end =0;
 		uint32_t duration_IPMB =0;
-			duration_IPMB = get_timer();
+			duration_IPMB = get_timer();*/
   uint32_t temp;
-  int t;
-  uint32_t arr[5];
-  uint32_t A, B, C, D, E;
+  register int t;
+  register uint32_t A;
+  uint32_t B, C, D, E;
   A = ctx->MD[0];
   B = ctx->MD[1];
   C = ctx->MD[2];
   D = ctx->MD[3];
   E = ctx->MD[4];
-/*  memcpy(arr, ctx ->MD, 5);
- // uint32_t ptr = ctx -> MD[0];
-  uint32_t *ptr = arr;
-
-    for(t = 0; t < 16; t++)
-    {
-  	temp = ISHACircularShift(5,*ptr) + ((*(ptr+1) & *(ptr+2)) | ((~(*(ptr+1))) & (*(ptr+3)))) + (*(ptr+4)) +__builtin_bswap32(*((uint32_t*)(ctx->MBlock+(t*4))));
-     // temp = ISHACircularShift(5,A) + ((B & C) | ((~B) & D)) + E +__builtin_bswap32(*((uint32_t*)(ctx->MBlock+(t*4))));
-  	 //ptr = ptr +4;
-  	 *(ptr+4) =*(ptr+3);
-  	 *(ptr+3) = *(ptr+2);
-  	 *(ptr+2) =ISHACircularShift(30,*(ptr+1));
-  	 *(ptr+1) = *ptr;
-  	 *ptr = temp;
-    }
-
-    ctx->MD[0] += *ptr++;
-    ctx->MD[1] += *ptr++;
-    ctx->MD[2] += *ptr++;
-    ctx->MD[3] += *ptr++;
-    ctx->MD[4] += *ptr++;*/
-
 
   for(t = 0; t < 16; t++)
   {
-	//temp = ISHACircularShift(5,*ptr) + (((*ptr+1) & (*ptr+2)) | ((~(*ptr+1)) & (*ptr+3))) + (*ptr+4) +__builtin_bswap32(*((uint32_t*)(ctx->MBlock+(t*4))));
     temp = ISHACircularShift(5,A) + ((B & C) | ((~B) & D)) + E +__builtin_bswap32(*((uint32_t*)(ctx->MBlock+(t*4))));
     E = D;
     D = C;
@@ -94,9 +72,9 @@ static void ISHAProcessMessageBlock(ISHAContext *ctx)
   ctx->MD[4] += E;
 
   ctx->MB_Idx = 0;
-  duration_IPMB_end = get_timer();
+/*  duration_IPMB_end = get_timer();
   total_IPMB += (duration_IPMB_end - duration_IPMB);
-  count_IPMB++;
+  count_IPMB++;*/
   return;
 }
 
@@ -122,9 +100,9 @@ static void ISHAPadMessage(ISHAContext *ctx)
    *  block.
    */
 
-	uint32_t duration_IPM_end =0;
+/*	uint32_t duration_IPM_end =0;
 	uint32_t duration_IPM =0;
-		duration_IPM = get_timer();
+		duration_IPM = get_timer();*/
   if (ctx->MB_Idx > 55)
   {
     ctx->MBlock[ctx->MB_Idx++] = 0x80;
@@ -140,9 +118,9 @@ static void ISHAPadMessage(ISHAContext *ctx)
   }
   *(uint32_t*)(ctx->MBlock + 60) = __builtin_bswap32(ctx->Length_Low);
   ISHAProcessMessageBlock(ctx);
-  duration_IPM_end = get_timer();
+/*  duration_IPM_end = get_timer();
    total_IPM += (duration_IPM_end - duration_IPM);
-   count_IPM++;
+   count_IPM++;*/
    return;
 }
 
@@ -150,7 +128,6 @@ static void ISHAPadMessage(ISHAContext *ctx)
 void ISHAReset(ISHAContext *ctx)
 {
   ctx->Length_Low  = 0;
-  ctx->Length_High = 0;
   ctx->MB_Idx      = 0;
 
   ctx->MD[0]       = 0x67452301;
@@ -160,20 +137,18 @@ void ISHAReset(ISHAContext *ctx)
   ctx->MD[4]       = 0xC3D2E1F0;
 
   ctx->Computed    = 0;
-  ctx->Corrupted   = 0;
-
 }
 
 
 void ISHAResult(ISHAContext *ctx, uint8_t *digest_out)
 {
-	uint32_t duration_IR_end =0;
+/*	uint32_t duration_IR_end =0;
 	uint32_t duration_IR =0;
-  duration_IR = get_timer();
-  if (ctx->Corrupted)
+  duration_IR = get_timer();*/
+/*  if (ctx->Corrupted)
   {
     return;
-  }
+  }*/
 
   if (!ctx->Computed)
   {
@@ -194,54 +169,29 @@ void ISHAResult(ISHAContext *ctx, uint8_t *digest_out)
     digest_out[i+2] = (ctx->MD[i/4] & 0x0000ff00) >> 8;
     digest_out[i+3] = (ctx->MD[i/4] & 0x000000ff);
   }*/
-  duration_IR_end = get_timer();
+ /* duration_IR_end = get_timer();
   total_IR += (duration_IR_end - duration_IR);
-  count_IR++;
+  count_IR++;*/
   return;
 }
 
 
 void ISHAInput(ISHAContext *ctx, const uint8_t *message_array, size_t length)
 {
-	uint32_t duration_I_end =0;
+/*	uint32_t duration_I_end =0;
 		uint32_t duration_I =0;
-	duration_I = get_timer();
-  /*if (!length)
-  {
-    return;
-  }
-  if (ctx->Computed || ctx->Corrupted)
-  {
-    ctx->Corrupted = 1;
-    return;
-  }
-*/
+	duration_I = get_timer();*/
   ctx->Length_Low += (8 * length);
 
-  while(length-- && !ctx->Corrupted)
-  {
+  while(length--) {
     ctx->MBlock[ctx->MB_Idx++] = *message_array++;
-   // ctx->Length_Low = (ctx->Length_Low + 8);
- /*   if (ctx->Length_Low == 0)
-    {
-      ctx->Length_High++;
-       Force it to 32 bits
-      ctx->Length_High &= 0xFFFFFFFF;
-      if (ctx->Length_High == 0)
-      {
-         Message is too long
-        ctx->Corrupted = 1;
-      }
-    }*/
-    if (ctx->MB_Idx == 64)
-    {
+    if (ctx->MB_Idx == 64) {
       ISHAProcessMessageBlock(ctx);
     }
   }
-  //ctx->Length_Low = (ctx->Length_Low + 8) * length;
-  duration_I_end = get_timer();
+  /*duration_I_end = get_timer();
   total_I += (duration_I_end - duration_I);
-  count_I++;
+  count_I++;*/
   return;
 }
 
