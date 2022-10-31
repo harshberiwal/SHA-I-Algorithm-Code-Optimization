@@ -1,3 +1,0 @@
-../source/pbkdf2.c:38:6:hmac_isha	344	static
-../source/pbkdf2.c:95:13:F	2112	static
-../source/pbkdf2.c:122:6:pbkdf2_hmac_isha	2624	static
