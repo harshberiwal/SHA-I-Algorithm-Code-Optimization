@@ -1,0 +1,6 @@
+../source/pbkdf2_test.c:28:6:cmp_bin	32	static
+../source/pbkdf2_test.c:39:22:hexdigit_to_int	16	static
+../source/pbkdf2_test.c:65:6:hexstr_to_bytes	40	static
+../source/pbkdf2_test.c:78:6:test_isha	224	static
+../source/pbkdf2_test.c:150:6:test_hmac_isha	128	static
+../source/pbkdf2_test.c:193:6:test_pbkdf2_hmac_isha	1304	static
